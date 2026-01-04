@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bogyó – Fejlesztés alatt</title>
+
+  <style>
+    :root{
+      /* arany (kalapált arany érzet) */
+      --gold-1:#f7efb8;
+      --gold-2:#e2c86c;
+      --gold-3:#b8861b;
+
+      --text:#3f2f15;
+      --bg:#f6f1e8;
+
+      /* EZ tolja a szöveget a logó alá (ha kell, ezt állítsd) */
+      --logo-gap: clamp(360px, 52vh, 640px);
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+
+    body{
+      min-height: 100svh;
+      background-color: var(--bg);
+
+      /* A feltöltött kép a TELJES OLDAL háttere */
+      background-image: url("bogyo-hero-background.PNG");
+      background-repeat: no-repeat;
+      background-position: center top;
+
+      /* FONTOS: ne vágjon, inkább “beérjen” a képernyő szélességére */
+      background-size: 100% auto;
+    }
+
+    /* nagy kijelzőn ne nyúljon végtelenre */
+    @media (min-width: 1200px){
+      body{ background-size: 1200px auto; }
+    }
+    @media (min-width: 1600px){
+      body{ background-size: 1400px auto; }
+    }
+
+    .wrap{
+      width: min(900px, 92vw);
+      margin: 0 auto;
+      text-align: center;
+
+      /* ettől kerül a szöveg a képen lévő logó ALÁ */
+      padding-top: var(--logo-gap);
+      padding-bottom: 40px;
+    }
+
+    .gold{
+      background: linear-gradient(180deg, var(--gold-1), var(--gold-2) 45%, var(--gold-3));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+
+    h1{
+      margin: 0 0 10px;
+      font-size: clamp(26px, 4.2vw, 48px);
+      font-weight: 900;
+      line-height: 1.15;
+      /* nincs árnyék */
+    }
+
+    .sub{
+      margin: 0 0 14px;
+      font-size: clamp(16px, 2vw, 20px);
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .date{
+      margin: 10px 0 6px;
+      font-size: clamp(18px, 2.2vw, 22px);
+      font-weight: 800;
+      color: var(--text);
+    }
+    .date strong{
+      display:block;
+      margin-top: 6px;
+      font-size: clamp(26px, 3.2vw, 34px);
+    }
+
+    .label{
+      margin: 18px 0 12px;
+      font-size: 13px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .countdown{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(12px, 2vw, 22px);
+      justify-items:center;
+    }
+    .num{
+      font-size: clamp(30px, 5vw, 56px);
+      font-weight: 950;
+      line-height: 1;
+    }
+    .unit{
+      margin-top: 8px;
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    @media (max-width: 640px){
+      .countdown{ grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
+      :root{ --logo-gap: clamp(320px, 50vh, 560px); }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <h1 class="gold">Üdvözlünk a Bogyó világában</h1>
+    <div class="sub">Fejlesztés alatt</div>
+
+    <div class="date">
+      Indulás
+      <strong class="gold">2026.06.09</strong>
+    </div>
+
+    <div class="label">Visszaszámlálás</div>
+
+    <section class="countdown" aria-label="Visszaszámláló">
+      <div>
+        <div class="num gold" id="d">0</div>
+        <div class="unit">Nap</div>
+      </div>
+      <div>
+        <div class="num gold" id="h">00</div>
+        <div class="unit">Óra</div>
+      </div>
+      <div>
+        <div class="num gold" id="m">00</div>
+        <div class="unit">Perc</div>
+      </div>
+      <div>
+        <div class="num gold" id="s">00</div>
+        <div class="unit">Másodperc</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Célidő: 2026.06.09 09:45 (nem jelenítjük meg külön, de eddig számol)
+    const target = new Date(2026, 5, 9, 9, 45, 0);
+
+    const elD = document.getElementById("d");
+    const elH = document.getElementById("h");
+    const elM = document.getElementById("m");
+    const elS = document.getElementById("s");
+
+    const pad = n => String(n).padStart(2, "0");
+
+    function tick(){
+      const now = new Date();
+      let diff = target - now;
+
+      if (diff <= 0){
+        elD.textContent = "0";
+        elH.textContent = "00";
+        elM.textContent = "00";
+        elS.textContent = "00";
+        return;
+      }
+
+      const total = Math.floor(diff / 1000);
+      const days = Math.floor(total / 86400);
+      const hours = Math.floor((total % 86400) / 3600);
+      const mins = Math.floor((total % 3600) / 60);
+      const secs = total % 60;
+
+      elD.textContent = days;
+      elH.textContent = pad(hours);
+      elM.textContent = pad(mins);
+      elS.textContent = pad(secs);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
