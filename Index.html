@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bogyó – Fejlesztés alatt</title>
+  <style>
+    :root{
+      --gold: #c9a24a;        /* kalapált arany jelleg */
+      --gold-2: #e3c876;
+      --text: #3a352c;
+    }
+
+    html, body{
+      height: 100%;
+      margin: 0;
+    }
+
+    body{
+      /* A kép a háttér, benne a logó */
+      background: url("bogyo-hero-background.PNG") center top / cover no-repeat fixed;
+      /* ha a kép betöltése villan: */
+      background-color: #f6f1e8;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+    }
+
+    /* Tartalom: csak szöveg, a logó alá tolva */
+    .wrap{
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      /* Fontos: logó alatti zóna - ha a logó a kép felső részében van, ez biztosan alá teszi */
+      padding-top: clamp(320px, 38vh, 520px);
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-bottom: 28px;
+
+      text-align: center;
+    }
+
+    h1{
+      margin: 0 0 10px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: var(--gold);
+      font-size: clamp(30px, 4.6vw, 56px);
+      line-height: 1.08;
+    }
+
+    .sub{
+      margin: 0 0 16px;
+      font-weight: 650;
+      font-size: clamp(16px, 2.1vw, 22px);
+      color: var(--text);
+    }
+
+    .label{
+      margin-top: 8px;
+      font-weight: 700;
+      color: var(--gold);
+      font-size: clamp(16px, 2.1vw, 22px);
+    }
+
+    .date{
+      margin: 6px 0 18px;
+      font-weight: 900;
+      color: var(--gold);
+      font-size: clamp(30px, 5.2vw, 54px);
+      letter-spacing: .6px;
+    }
+
+    .countdown{
+      width: min(760px, 100%);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(10px, 2.2vw, 18px);
+      margin-top: 10px;
+      margin-bottom: 18px;
+    }
+
+    .cell{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(10px, 2.2vw, 18px) 10px;
+
+      /* NINCS panel, NINCS háttér, NINCS árnyék */
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .num{
+      font-weight: 900;
+      color: var(--gold);
+      font-size: clamp(34px, 6.2vw, 64px);
+      line-height: 1;
+    }
+
+    .unit{
+      margin-top: 8px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      font-size: clamp(12px, 1.7vw, 16px);
+      color: var(--text);
+      opacity: .9;
+    }
+
+    .dev{
+      margin: 8px 0 0;
+      font-weight: 650;
+      font-size: clamp(14px, 2vw, 18px);
+      color: var(--text);
+    }
+
+    /* Mobilon 2x2 elrendezés */
+    @media (max-width: 640px){
+      body{
+        background-attachment: scroll; /* mobilon stabilabb */
+      }
+      .countdown{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .wrap{
+        /* mobilon picit lejjebb, hogy biztosan a logó alá essen */
+        padding-top: clamp(340px, 42vh, 560px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap" aria-label="Bogyó – fejlesztés alatt">
+    <h1>Üdvözlünk a Bogyó világában</h1>
+
+    <p class="label">Indulás</p>
+    <div class="date" aria-label="Indulás dátuma">2026.06.09.</div>
+
+    <section class="countdown" aria-label="Visszaszámláló">
+      <div class="cell">
+        <div class="num" id="d">0</div>
+        <div class="unit">NAP</div>
+      </div>
+      <div class="cell">
+        <div class="num" id="h">0</div>
+        <div class="unit">ÓRA</div>
+      </div>
+      <div class="cell">
+        <div class="num" id="m">0</div>
+        <div class="unit">PERC</div>
+      </div>
+      <div class="cell">
+        <div class="num" id="s">0</div>
+        <div class="unit">MÁSODPERC</div>
+      </div>
+    </section>
+
+    <p class="dev">Fejlesztés alatt</p>
+  </main>
+
+  <script>
+    // Célidő: 2026-06-09 09:45 Europe/Budapest
+    const target = new Date("2026-06-09T09:45:00+02:00");
+
+    const elD = document.getElementById("d");
+    const elH = document.getElementById("h");
+    const elM = document.getElementById("m");
+    const elS = document.getElementById("s");
+
+    const pad2 = (n) => String(n).padStart(2, "0");
+
+    function tick(){
+      const now = new Date();
+      let diff = target.getTime() - now.getTime();
+
+      if (diff <= 0){
+        elD.textContent = "0";
+        elH.textContent = "00";
+        elM.textContent = "00";
+        elS.textContent = "00";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+
+      elD.textContent = String(days);
+      elH.textContent = pad2(hours);
+      elM.textContent = pad2(mins);
+      elS.textContent = pad2(secs);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
