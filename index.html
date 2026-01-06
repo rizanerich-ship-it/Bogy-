@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bogyó – Fejlesztés alatt</title>
+
+<style>
+  :root{
+    --paper1:#FAF4E7;
+    --paper2:#F1E6CE;
+    --paper3:#F7F0DE;
+    --gold:#B08A2E;
+    --ink:#2F3A2F;
+    --leaf1: rgba(145,165,120,.16);
+    --leaf2: rgba(145,165,120,.11);
+    --leaf3: rgba(145,165,120,.08);
+  }
+
+  *{ box-sizing:border-box; }
+
+  /* ✅ NINCS KERET/KÁRTYA – minden a háttéren ül */
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 28px 18px;
+    font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color: var(--ink);
+
+    /* ✅ PAPÍR + AKVARELL FOLTOK (nem egyszínű) */
+    background:
+      radial-gradient(520px 420px at 20% 18%, rgba(205,190,150,.22), transparent 68%),
+      radial-gradient(520px 420px at 85% 28%, rgba(195,180,140,.18), transparent 70%),
+      radial-gradient(620px 520px at 55% 70%, rgba(210,195,160,.18), transparent 72%),
+
+      /* finom “papír szemcse” */
+      repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,.10),
+        rgba(255,255,255,.10) 2px,
+        rgba(0,0,0,.018) 3px
+      ),
+
+      linear-gradient(180deg, var(--paper1), var(--paper2));
+  }
+
+  /* ✅ LEVÉL MOTÍVUM – halvány, “lenyomat” jelleg (felül és alul) */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:-20px;
+    pointer-events:none;
+    opacity:1;
+    background:
+      /* felső ág “folt” */
+      radial-gradient(420px 220px at 78% 10%, var(--leaf1), transparent 68%),
+      radial-gradient(360px 200px at 62% 14%, var(--leaf2), transparent 68%),
+      radial-gradient(340px 200px at 90% 18%, var(--leaf3), transparent 70%),
+
+      /* alsó ág “folt” */
+      radial-gradient(460px 260px at 22% 90%, var(--leaf1), transparent 70%),
+      radial-gradient(380px 220px at 35% 88%, var(--leaf2), transparent 70%),
+      radial-gradient(320px 200px at 14% 82%, var(--leaf3), transparent 72%);
+    mix-blend-mode:multiply;
+    filter: blur(0.2px);
+  }
+
+  .wrap{
+    width:min(980px, 94vw);
+    text-align:center;
+  }
+
+  .logo{
+    width:150px;
+    height:auto;
+    display:block;
+    margin: 0 auto 16px;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,.10));
+  }
+
+  /* ✅ Desktopon 1 sorban legyen a cím */
+  h1{
+    margin: 0 0 10px;
+    font-family: ui-serif, Georgia, "Times New Roman", serif;
+    font-weight: 800;
+    letter-spacing: .2px;
+    line-height:1.1;
+    font-size: 34px;
+    color: var(--gold);
+  }
+
+  .date{
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: .6px;
+    margin: 12px 0 18px;
+    color: var(--gold); /* ✅ arany dátum */
+  }
+
+  .grid{
+    display:flex;
+    gap:14px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin: 10px 0 18px;
+  }
+
+  .box{
+    width: 110px;
+    background: rgba(255,255,255,.42);
+    border-radius: 16px;
+    padding: 14px 10px 12px;
+    box-shadow: 0 18px 45px rgba(0,0,0,.08);
+    border: 1px solid rgba(176,138,46,.14);
+  }
+
+  .num{
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .lbl{
+    margin-top: 10px;
+    font-size: 12px;
+    letter-spacing: 4px;
+    font-weight: 800;
+    opacity: .9;
+  }
+
+  .status{
+    margin-top: 22px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: .2px;
+  }
+
+  @media (min-width: 900px){
+    /* ✅ asztalin egymás mellett, egy sorban */
+    h1{ font-size: 44px; white-space: nowrap; }
+    .date{ font-size: 32px; }
+  }
+
+  @media (max-width: 420px){
+    .logo{ width: 135px; }
+    h1{ font-size: 30px; }
+    .date{ font-size: 24px; }
+    .box{ width: 100px; }
+    .num{ font-size: 36px; }
+  }
+</style>
+</head>
+
+<body>
+  <main class="wrap" aria-label="Bogyó – fejlesztés alatt">
+    <img class="logo" src="bogyo_logo_transparent.png" alt="Bogyó logó">
+
+    <h1>Üdvözlünk a Bogyó világában</h1>
+    <div class="date">2026.06.09.</div>
+
+    <section class="grid" aria-label="Visszaszámláló">
+      <div class="box"><div class="num" id="d">--</div><div class="lbl">NAP</div></div>
+      <div class="box"><div class="num" id="h">--</div><div class="lbl">ÓRA</div></div>
+      <div class="box"><div class="num" id="m">--</div><div class="lbl">PERC</div></div>
+      <div class="box"><div class="num" id="s">--</div><div class="lbl">MP</div></div>
+    </section>
+
+    <div class="status">Fejlesztés alatt</div>
+  </main>
+
+<script>
+  // ✅ lejárat: 2026.06.09 09:45 (helyi idő szerint)
+  const target = new Date(2026, 5, 9, 9, 45, 0); // hónap: 0=jan, 5=jún
+
+  const elD = document.getElementById("d");
+  const elH = document.getElementById("h");
+  const elM = document.getElementById("m");
+  const elS = document.getElementById("s");
+
+  function pad2(n){ return String(n).padStart(2,"0"); }
+
+  function tick(){
+    const now = new Date();
+    let diff = target - now;
+
+    if(diff <= 0){
+      elD.textContent = "0";
+      elH.textContent = "00";
+      elM.textContent = "00";
+      elS.textContent = "00";
+      return;
+    }
+
+    const sec = Math.floor(diff/1000);
+    const days = Math.floor(sec/86400);
+    const hours = Math.floor((sec%86400)/3600);
+    const mins = Math.floor((sec%3600)/60);
+    const secs = sec%60;
+
+    elD.textContent = String(days);
+    elH.textContent = pad2(hours);
+    elM.textContent = pad2(mins);
+    elS.textContent = pad2(secs);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
