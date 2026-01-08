@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bogyó Patika – Fejlesztés alatt</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: "Georgia", serif;
+}
+
+body {
+  background: url("patika.desktop.PNG") center top / cover no-repeat;
+  color: #bf9b3d;
+}
+
+/* TABLET */
+@media (max-width: 1024px) {
+  body {
+    background: url("patika.tablet.PNG") center top / cover no-repeat;
+  }
+}
+
+/* MOBIL */
+@media (max-width: 480px) {
+  body {
+    background: url("patika.mobile.PNG") center top / cover no-repeat;
+  }
+}
+
+/* FŐ KONTÉNER */
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 60px;
+  text-align: center;
+}
+
+/* LOGÓ */
+.logo img {
+  width: 260px;
+  max-width: 70vw;
+  height: auto;
+}
+
+/* MOBIL LOGÓ MÉRET */
+@media (max-width: 480px) {
+  .logo img {
+    width: 220px;
+  }
+}
+
+/* ÜDVÖZLŐ SZÖVEG */
+.welcome {
+  margin-top: 18px;
+  margin-bottom: 18px;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 500;
+}
+
+/* DÁTUM */
+.date {
+  margin-bottom: 24px;
+  font-size: 22px;
+}
+
+/* VISSZASZÁMLÁLÓ */
+.countdown {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin-bottom: 24px;
+}
+
+.time-block {
+  text-align: center;
+}
+
+.time-value {
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.time-label {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* MOBIL FINOMÍTÁS */
+@media (max-width: 480px) {
+  .countdown {
+    gap: 16px;
+  }
+
+  .time-value {
+    font-size: 28px;
+  }
+}
+
+/* FEJLESZTÉS ALATT */
+.status {
+  font-size: 20px;
+  color: #2f3b2f;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- LOGÓ -->
+  <div class="logo">
+    <img src="patika.logo.PNG" alt="Bogyó Patika logó">
+  </div>
+
+  <!-- ÜDVÖZLŐ -->
+  <div class="welcome">
+    Üdvözlünk a Bogyó világában
+  </div>
+
+  <!-- DÁTUM -->
+  <div class="date">
+    2026.06.09.
+  </div>
+
+  <!-- VISSZASZÁMLÁLÓ -->
+  <div class="countdown" id="countdown">
+    <div class="time-block">
+      <div class="time-value" id="days">0</div>
+      <div class="time-label">Nap</div>
+    </div>
+    <div class="time-block">
+      <div class="time-value" id="hours">0</div>
+      <div class="time-label">óra</div>
+    </div>
+    <div class="time-block">
+      <div class="time-value" id="minutes">0</div>
+      <div class="time-label">perc</div>
+    </div>
+    <div class="time-block">
+      <div class="time-value" id="seconds">0</div>
+      <div class="time-label">mp</div>
+    </div>
+  </div>
+
+  <!-- ÁLLAPOT -->
+  <div class="status">
+    Fejlesztés alatt
+  </div>
+
+</div>
+
+<script>
+const targetDate = new Date("2026-06-09T00:00:00").getTime();
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+
+  if (diff < 0) return;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById("days").innerText = days;
+  document.getElementById("hours").innerText = hours;
+  document.getElementById("minutes").innerText = minutes;
+  document.getElementById("seconds").innerText = seconds;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
