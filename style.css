@@ -1,0 +1,142 @@
+:root{
+  --gold: #d7a856;
+  --dark: #2f3a2f;
+  --paper: #efe7d7;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  min-height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* ===== HÁTTÉR ===== */
+.bg{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  background-color: var(--paper);
+  background-image: url("patika.desktop.PNG");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; /* alap */
+}
+
+/* Mobil: marad cover */
+@media (max-width: 760px){
+  .bg{
+    background-image: url("patika.mobile.PNG");
+    background-size: cover;
+  }
+}
+
+/* Tablet: marad cover */
+@media (min-width: 761px) and (max-width: 1200px){
+  .bg{
+    background-image: url("patika.tablet.PNG");
+    background-size: cover;
+  }
+}
+
+/* PC: contain (ne vágjon, látszódjanak a levelek) */
+@media (min-width: 1201px){
+  .bg{
+    background-image: url("patika.desktop.PNG");
+    background-size: contain;
+    background-position: center;
+  }
+}
+
+/* ===== TARTALOM ===== */
+.wrap{
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  padding: calc(18px + env(safe-area-inset-top)) 18px calc(22px + env(safe-area-inset-bottom));
+  gap: 10px;
+}
+
+/* logó domináns mindenhol */
+.logo{
+  width: clamp(240px, 40vw, 560px);
+  max-width: 92vw;
+  height: auto;
+  margin-top: 8px;
+}
+
+.title{
+  font-family: "Cormorant Garamond", serif;
+  color: var(--gold);
+  font-weight: 700;
+  line-height: 1.06;
+  margin: 8px 0 0;
+  font-size: clamp(34px, 6vw, 68px);
+  max-width: 92vw;
+}
+
+/* tablet+pc: 1 sor */
+@media (min-width: 761px){
+  .title{
+    white-space: nowrap;
+    max-width: none;
+  }
+}
+
+.date{
+  color: var(--gold);
+  font-weight: 600;
+  margin-top: 2px;
+  font-size: clamp(20px, 3.4vw, 40px);
+}
+
+/* számláló: 1 sor, nincs pont */
+.countdown{
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(16px, 4vw, 50px);
+  flex-wrap: nowrap;
+}
+
+/* ha extrém keskeny, engedjük törni */
+@media (max-width: 360px){
+  .countdown{ flex-wrap: wrap; }
+}
+
+.cd-col{ min-width: 60px; }
+
+.num{
+  color: var(--gold);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-size: clamp(28px, 6.5vw, 70px);
+}
+
+.lbl{
+  margin-top: 6px;
+  color: var(--dark);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+}
+
+.status{
+  margin-top: 18px;
+  color: var(--dark);
+  font-weight: 600;
+  font-size: clamp(18px, 2.8vw, 34px);
+}
