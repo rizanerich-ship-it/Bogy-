@@ -1,0 +1,139 @@
+:root{
+  --gold: #d7a856;
+  --dark: #2f3a2f;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  min-height: 100svh;
+  overflow-y: auto;
+  font-family: Montserrat, system-ui, sans-serif;
+}
+
+/* ===== HÁTTÉR ===== */
+.bg{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  background-color: #efe7d7;
+  background-image: url("patika.desktop.PNG");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; /* alap */
+}
+
+/* MOBIL: marad cover */
+@media (max-width: 760px){
+  .bg{
+    background-image: url("patika.mobile.PNG");
+    background-size: cover;
+  }
+}
+
+/* TABLET */
+@media (min-width: 761px) and (max-width: 1200px){
+  .bg{
+    background-image: url("patika.tablet.PNG");
+    background-size: cover;
+  }
+}
+
+/* PC: ne vágjon, látszódjon minden */
+@media (min-width: 1201px){
+  .bg{
+    background-image: url("patika.desktop.PNG");
+    background-size: contain;
+    background-position: center;
+  }
+}
+
+/* ===== SZÍNPAD ===== */
+.stage{
+  position: relative;
+  min-height: 180svh;
+  padding: 12px 18px 24px;
+}
+
+/* LOGÓ – alja a képernyő közepén */
+.logo{
+  position: absolute;
+  left: 50%;
+  top: 50svh;
+  transform: translate(-50%, -100%);
+
+  width: clamp(240px, 34vw, 520px);
+  max-width: 92vw;
+}
+
+/* ÜDVÖZLŐ – alsó harmad közepe */
+.title{
+  position: absolute;
+  left: 50%;
+  top: 83.333svh;
+  transform: translate(-50%, -50%);
+
+  font-family: "Cormorant Garamond", serif;
+  color: var(--gold);
+  font-weight: 700;
+  font-size: clamp(30px, 6vw, 54px);
+  max-width: 92vw;
+  text-align: center;
+}
+
+/* DÁTUM – szimmetrikus távolság */
+.date{
+  position: absolute;
+  left: 50%;
+  top: 116.666svh;
+  transform: translate(-50%, -50%);
+
+  color: var(--gold);
+  font-weight: 600;
+  font-size: clamp(18px, 3.5vw, 34px);
+}
+
+/* DÁTUM ALATT */
+.below-date{
+  position: absolute;
+  left: 50%;
+  top: calc(116.666svh + 1em);
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+}
+
+/* SZÁMLÁLÓ */
+.countdown{
+  display: flex;
+  justify-content: center;
+  gap: clamp(18px, 4vw, 48px);
+  flex-wrap: wrap;
+}
+
+.num{
+  color: var(--gold);
+  font-weight: 700;
+  font-size: clamp(26px, 6vw, 62px);
+}
+
+.lbl{
+  margin-top: 6px;
+  color: var(--dark);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+}
+
+/* STÁTUSZ */
+.status{
+  margin-top: 1em;
+  color: var(--dark);
+  font-weight: 600;
+  font-size: clamp(18px, 3vw, 30px);
+}
