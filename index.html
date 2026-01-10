@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bogyó</title>
+
+  <style>
+    :root { --gold:#bf9b3d; }
+
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      border: 0;
+      background: transparent;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    /* Háttér: mobil alap, tablet, desktop */
+    body{
+      background-image: url("patika.mobile.PNG");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+    @media (min-width: 768px){
+      body{ background-image: url("patika.tablet.PNG"); }
+    }
+    @media (min-width: 1024px){
+      body{ background-image: url("patika.desktop.PNG"); }
+    }
+
+    /* Két zóna: felső (logó+üdvözlő) + alsó (dátum+számláló) */
+    .page{
+      height: 100%;
+      width: 100%;
+      display: grid;
+      grid-template-rows: 1fr auto; /* alul fix blokk */
+      align-items: center;
+      justify-items: center;
+      padding: 24px 18px 18px;
+      gap: 10px;
+    }
+
+    .top{
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    /* LOGÓ: direkt nagyobb, PC-n külön nagyítva */
+    .logo{
+      width: clamp(200px, 38vw, 360px); /* mobil/tablet */
+      height: auto;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    @media (min-width: 1024px){
+      .logo{ width: clamp(360px, 28vw, 560px); } /* desktop */
+    }
+    @media (min-width: 1440px){
+      .logo{ width: clamp(440px, 24vw, 680px); } /* nagy desktop */
+    }
+
+    /* Üdvözlő: a logó és az alsó blokk közti tér optikai közepén */
+    .welcome{
+      color: var(--gold);
+      font-size: clamp(20px, 2.4vw, 34px);
+      font-weight: 500;
+      line-height: 1.25;
+      margin: 0;
+      padding: 22px 10px 0; /* lélegző tér a logó alatt */
+    }
+
+    /* Alsó blokk a lap alján, dátum közel a számlálóhoz */
+    .bottom{
+      width: 100%;
+      display: grid;
+      justify-items: center;
+      gap: 6px;            /* "nem sokkal" a számláló fölött */
+      padding-bottom: 6px; /* ne tapadjon teljesen alulra */
+      text-align: center;
+    }
+
+    .date{
+      color: var(--gold);
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      margin: 0;
+    }
+
+    .countdown{
+      color: var(--gold);
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 650;
+      line-height: 1.05;
+      margin: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Mobilon kicsit feszesebb */
+    @media (max-width: 380px){
+      .welcome{ padding-top: 16px; }
+      .bottom{ padding-bottom: 2px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page" aria-label="Bogyó nyitóoldal">
+    <section class="top" aria-label="Fő blokk">
+      <img class="logo" src="patika.logo.png" alt="Bogyó logó">
+      <p class="welcome">Üdvözlünk a Bogyó világában</p>
+    </section>
+
+    <section class="bottom" aria-label="Dátum és visszaszámláló">
+      <p class="date">2026.06.09</p>
+      <p id="countdown" class="countdown">--:--:--:--</p>
+    </section>
+  </main>
+
+  <script>
+    // 2026.06.09 09:45 Magyar idő (Europe/Budapest).
+    // Ezen a napon CEST van (UTC+2), ezért UTC-ben 07:45Z.
+    const targetUtc = new Date("2026-06-09T07:45:00Z").getTime();
+    const el = document.getElementById("countdown");
+
+    function pad2(n){ return String(n).padStart(2, "0"); }
+
+    function render(){
+      const now = Date.now();
+      let diff = targetUtc - now;
+
+      if (diff <= 0){
+        el.textContent = "00:00:00:00";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+
+      el.textContent = `${pad2(days)}:${pad2(hours)}:${pad2(mins)}:${pad2(secs)}`;
+    }
+
+    render();
+    setInterval(render, 1000);
+  </script>
+</body>
+</html>
